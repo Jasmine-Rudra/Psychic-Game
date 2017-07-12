@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Psychic Game</title>
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+<body>
+<h1>The Psychic Game</h1>
+<div>Guess what I am thinking of?</div>
+<p>Wins: <span id="win"></span></p>
+<p>Losses: <span id="loss"></span></p>
+<p>Guesses left: <span id="gleft"></span></p>
+<p>Your Guesses so far: <span id="guesses"></span></p>
+<div><span id="Result"></span></div>
+<button id="refresh" onclick="reset()">Reset</button>
+<script type="text/javascript">
+		var arr="abcdefghijklmnopqrstuvwxyz".split('');
+	var guesses_left=9;
+	var guesses_so_far=[];
+	var wins=0;
+	var loss=0;
+	var myChoice= Math.floor(Math.random()*25);
+	var flag=true;
+
+	document.onkeyup = function(event){
+
+		var inp=event.key;
+		var keycode=event.keyCode;
+		console.log(inp,myChoice,arr[myChoice]);
+		
+		if ((keycode >= 65 && keycode <= 90)||(keycode >= 97 && keycode <= 112)){
+			inp=inp.toLowerCase();		
+			guesses_left--;
+			flag=true;
+			if(guesses_left>-1){
+				for(i=0;i<guesses_so_far.length;i++){
+					if(inp==guesses_so_far[i])
+						flag=false;
+				}
+				if(flag){
+				guesses_so_far.push(inp);
+				decideresult(inp,guesses_left);
+				document.getElementById("gleft").textContent=guesses_left;
+				document.getElementById("guesses").textContent=guesses_so_far;
+			}
+			}
+			else{
+				reset();
+			}
+				
+	}
+		document.getElementById("win").textContent=wins;
+		document.getElementById("loss").textContent=loss;
+		
+}
+function decideresult(x,y){
+	
+	if(y==0){
+		loss++;
+		document.getElementById("Result").textContent="Lost";
+		reset();
+	}
+	else if(x==arr[myChoice]){
+		wins++;
+		document.getElementById("Result").textContent="Win";
+		reset();
+	}
+	else{
+		document.getElementById("Result").textContent="Try again";
+	}
+
+}
+function reset(){
+	guesses_left=9;
+	guesses_so_far=[];
+	myChoice= Math.floor(Math.random()*25);
+	console.log(myChoice,Math.floor(Math.random()*25));
+	flag=true;
+}
+</script>
+</body>
+</html>
