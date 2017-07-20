@@ -3,17 +3,25 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Psychic Game</title>
-	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
+<div id="container">
 <h1>The Psychic Game</h1>
-<div>Guess what I am thinking of?</div>
-<p>Wins: <span id="win"></span></p>
-<p>Losses: <span id="loss"></span></p>
-<p>Guesses left: <span id="gleft"></span></p>
-<p>Your Guesses so far: <span id="guesses"></span></p>
-<div><span id="Result"></span></div>
-<button id="refresh" onclick="reset()">Reset</button>
+<div id="guess">Guess what I am thinking of?</div>
+<div id="spacing"></div>
+<div id="ball"></div>
+<p class="result">Wins: <span id="win"></span></p>
+<p class="result">Losses: <span id="loss"></span></p>
+<p class="result">Guesses left: <span id="gleft"></span></p>
+<p class="result">Your Guesses so far: <span id="guesses"></span></p>
+<div class="centerAlign"><span id="Result"></span></div>
+<div class="centerAlign"><button class="myButton" id="refresh" onclick="reset()">Reset</button></div>
+</div>
+
+
 <script type="text/javascript">
 		var arr="abcdefghijklmnopqrstuvwxyz".split('');
 	var guesses_left=9;
@@ -22,15 +30,18 @@
 	var loss=0;
 	var myChoice= Math.floor(Math.random()*25);
 	var flag=true;
-
+	var move;
+	$("#ball").html('<img id="crystal" src="ball.jpg">');
 	document.onkeyup = function(event){
-
 		var inp=event.key;
 		var keycode=event.keyCode;
 		console.log(inp,myChoice,arr[myChoice]);
 		
 		if ((keycode >= 65 && keycode <= 90)||(keycode >= 97 && keycode <= 112)){
-			inp=inp.toLowerCase();		
+			$("#ball").html('<img id="crystal" src="ball1.gif">');
+			setTimeout(function(){
+				$("#ball").html('<img id="crystal" src="ball.jpg">');
+				inp=inp.toLowerCase();		
 			guesses_left--;
 			flag=true;
 			if(guesses_left>-1){
@@ -48,28 +59,30 @@
 			else{
 				reset();
 			}
+			},1500);
+			
 				
 	}
 		document.getElementById("win").textContent=wins;
 		document.getElementById("loss").textContent=loss;
 		
 }
+$("#refresh").click(reset());
 function decideresult(x,y){
 	
 	if(y==0){
 		loss++;
-		document.getElementById("Result").textContent="Lost";
+		document.getElementById("Result").textContent="Loser!";
 		reset();
 	}
 	else if(x==arr[myChoice]){
 		wins++;
-		document.getElementById("Result").textContent="Win";
+		document.getElementById("Result").textContent="Winner!";
 		reset();
 	}
 	else{
-		document.getElementById("Result").textContent="Try again";
+		document.getElementById("Result").textContent="Try again!";
 	}
-
 }
 function reset(){
 	guesses_left=9;
@@ -77,6 +90,10 @@ function reset(){
 	myChoice= Math.floor(Math.random()*25);
 	console.log(myChoice,Math.floor(Math.random()*25));
 	flag=true;
+	document.getElementById("gleft").textContent=guesses_left;
+	document.getElementById("guesses").textContent=guesses_so_far;
+	document.getElementById("win").textContent=wins;
+	document.getElementById("loss").textContent=loss;
 }
 </script>
 </body>
